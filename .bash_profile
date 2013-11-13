@@ -16,7 +16,7 @@ export HISTFILESIZE=200000
 export ANT_ARGS="-emacs -lib /r9/bigk1/.bootstrap"
 export ANT_OPTS="-Xms256m -Xmx1024m"
 
-source .bashmarks.sh
+source bashmarks.sh
 
 # Add bash aliases.
 if [ -f ~/.bash_aliases ]; then
