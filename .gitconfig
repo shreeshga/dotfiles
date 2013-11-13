@@ -1,0 +1,111 @@
+[user]
+	name = shreesh ayachit
+	email = shreesh@kayak.com
+[alias]
+  #workflow
+  # 1. Start a story with a new branch
+  #
+  #   git cob feature_x
+  # 2. Hack and commit often in that branch
+  #
+  #   vi file.rb
+  #   git aa
+  #   git c "Make changes"
+  # 3. Pull in upstream changes as often as possible
+  #
+  #   git up
+  # 4. Clean up the history by squashing commits
+  #
+  #   git ri
+  # 5. Merge into master, run all tests and push upstream
+  #
+  #   git put
+  #   git push
+  c = commit -m
+  ai = add -i
+  a = add
+  aa= !git add -u && git add . && git status
+  cob = checkout -b
+  up = !git fetch origin && git rebase origin/master
+  put = !git fetch && git rebase origin/master && git checkout master && git merge @{-1}
+
+  # who has contributed to a project
+  who = shortlog -n -s --no-merges
+  
+  cleanup = !git remote prune origin && git gc && git clean -dfx && git stash clear
+ 
+  # diff with HEAD
+  dlc = diff --cached HEAD^
+  
+  uncommit = reset --soft HEAD^
+  undo = reset --hard 
+  unadd = reset HEAD
+  discard = checkout --
+  pr = pull --rebase
+  
+  # Find a file path in codebase:
+  f = "!git ls-files | grep -i"
+    
+  # Work In Progress: from https://gist.github.com/492227 and VonC on stackoverflow.
+  # This enables a quick way to add all new and modified files to the index,
+  # while cleaning the index from the files removed from the working tree;
+  # this cleaning will facilite a rebase, because there won't be any conlfict 
+  # due to an "unclean" working directory (not in sync with the index).
+  # The unwip will restore the deleted files to the working tree.
+  wip = !"git add -A; git ls-files --deleted -z | xargs -0 git rm; git commit -m \"wip\""
+  unwip = !"git log -n 1 | grep -q -c wip && git reset HEAD~1"
+  
+  # Suppose we want to edit file and  never check it in:
+  assume   = update-index --assume-unchanged
+  unassume = update-index --no-assume-unchanged
+  assumed  = "!git ls-files -v | grep ^h | cut -c 3-"
+
+  r = rebase
+  rc = rebase --continue
+  ra = rebase --abort
+ 
+  # when you want to pull latest master onto your branch
+  ri = !git rebase -i origin/master
+  
+  undo = reset --soft HEAD~
+	outgoing = log @{u}..
+	incoming = "!git remote update -p; git log ..@{u}"
+	
+  lg = log  --graph --all --abbrev-commit --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+  
+  # git find "ENG-83017"
+  find = log --pretty=\"format:%Cgreen%H %Cblue%s\" --name-status --grep
+
+  head = !"git log -n1"
+  
+[color]
+	ui = true
+[github]
+	user = shreeshga
+	email = shreeshga@gmail.com
+[core]
+	excludesfile = /Users/shreesh/.gitignoreglobal
+	editor = mvim
+	autocrlf = input
+[merge]
+	renamelimit = 3652
+  defaultToUpstream = true
+[branch]
+  autosetupmerge = true
+  autosetuprebase = remote
+[branch "master"]
+  mergeoptions = --no-ff
+[push]
+	default = upstream
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[diff]
+#external = ~/opendiff-git.sh
+[color "status"]
+  changed = bold yellow
+  untracked = bold cyan
+  added = bold green
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
